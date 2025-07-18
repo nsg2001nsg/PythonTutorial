@@ -32,7 +32,7 @@ class LinkedList:
             print("List is Empty!")
         print()
 
-    def add_to_start(self, data):
+    def prepend(self, data):
         new_node = Node(data)
         if self.head:
             temp = self.head
@@ -47,7 +47,7 @@ class LinkedList:
             print("Invalid index")
             return
         if index == 0:
-            self.add_to_start(data)
+            self.prepend(data)
             return
 
         new_node = Node(data)
@@ -138,6 +138,47 @@ class LinkedList:
             print("Empty List!")
         return
 
+    def pop(self):
+        if self.head and self.length > 1:
+            node = self.head
+            prev = None
+            while node.next:
+                prev = node
+                node = node.next
+            prev.next = None
+            self.length -= 1
+            return node.data
+        elif self.length == 1:
+            node = self.head
+            self.head = None
+            self.length -= 1
+            return node.data
+        else:
+            return None
+
+    def find(self, value):
+        if self.head:
+            node = self.head
+            while node:
+                if node.data == value:
+                    return True
+                node = node.next
+            return False
+        print('List is Empty!')
+
+    def get(self, index):
+        if self.head and self.length > index >= 0:
+            node = self.head
+            while index:
+                node = node.next
+                index -= 1
+            return node.data
+        elif index >= self.length:
+            print('Invalid Index!')
+        else:
+            print('List is Empty!')
+        return
+
     def __len__(self):
         return self.length
 
@@ -152,9 +193,8 @@ ll1.append(6)
 ll1.append(8)
 ll1.append(10)
 ll1.append(9)
-ll1.add_to_start(9)
+ll1.prepend(9)
 ll1.insert(99, 0)
-print('length:', ll1.length)
 ll1.insert(12, 11)
 ll1.display()
 ll1.update(4, 99)
@@ -166,9 +206,15 @@ ll1.append(8)
 ll1.append(8)
 ll1.display()
 ll1.delete_all(8)
+# ll1.reverse()
 ll1.display()
+print(ll1.pop())
+ll1.display()
+print(ll1.find(0))
+print(ll1.find(6))
+print(ll1.find(12))
+print(ll1.find(9))
 print('length:', ll1.length)
-ll1.reverse()
-ll1.display()
+print(ll1.get(9))
 
 
