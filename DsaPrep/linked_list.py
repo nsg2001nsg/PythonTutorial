@@ -35,31 +35,31 @@ class LinkedList:
     def prepend(self, data):
         new_node = Node(data)
         if self.head:
-            temp = self.head
-            self.head = new_node
-            new_node.next = temp
-        else:
-            self.head = new_node
+            new_node.next = self.head
+        self.head = new_node
         self.length += 1
 
     def insert(self, data, index):
-        if 0 > index or index > self.length:
-            print("Invalid index")
+        if self.head and 0 < index < self.length:
+            new_node = Node(data)
+            node = self.head
+            prev = None
+            while index:
+                prev = node
+                node = node.next
+                index -= 1
+            prev.next = new_node
+            new_node.next = node
+            self.length += 1
             return
-        if index == 0:
+        elif index == 0:
             self.prepend(data)
             return
-
-        new_node = Node(data)
-        node = self.head
-        prev = None
-        while index:
-            prev = node
-            node = node.next
-            index -= 1
-        prev.next = new_node
-        new_node.next = node
-        self.length += 1
+        elif index == self.length:
+            self.append(data)
+            return
+        print("Invalid index")
+        return
 
     def delete(self, value):
         if self.length == 0:
@@ -99,15 +99,15 @@ class LinkedList:
             prev = node
             node = node.next
 
-    def update(self, data, value):
+    def update(self, new_value, old_value):
         if self.length == 0:
             print("Empty list!")
             return
         node = self.head
-        while node and node.data != value:
+        while node and node.data != old_value:
             node = node.next
         if node:
-            node.data = data
+            node.data = new_value
             return
         print("Value not found")
 
@@ -122,6 +122,17 @@ class LinkedList:
                     node.data = data
                 node = node.next
             return
+
+    def update_index(self, data, index):
+        if self.head and 0 <= index < self.length:
+            node = self.head
+            while index:
+                node = node.next
+                index -= 1
+            node.data = data
+            return
+        print("Invalid Index!")
+        return
 
     def reverse(self):
         if self.head and self.length > 1:
@@ -216,6 +227,11 @@ if __name__ == "__main__":
     print(ll1.find(12))
     print(ll1.find(9))
     print('length:', ll1.length)
-    print(ll1.get(9))
+    print(ll1.get(10))
+    ll1.update_index(13, 0)
+    ll1.update_index(14, -1)
+    ll1.update_index(15, 8)
+    ll1.update_index(16, 9)
+    ll1.display()
 
 
