@@ -10,17 +10,17 @@ class LinkedList:
     def __init__(self):
         self.head = None
         self.length = 0
+        self.tail = None
 
     def append(self, data):
         new_node = Node(data)
-        if self.head:
-            node = self.head
-            while node.next:
-                node = node.next
-            node.next = new_node
+        if self.tail:
+            self.tail.next = new_node
         else:
             self.head = new_node
+        self.tail = new_node
         self.length += 1
+        return
 
     def display(self):
         if self.head:
@@ -62,42 +62,54 @@ class LinkedList:
         return
 
     def delete(self, value):
-        if self.length == 0:
-            print("Empty list!")
-            return
-        node = self.head
-        prev = None
-        while node and node.data != value:
-            prev = node
-            node = node.next
-        if node and prev is not None:
-            prev.next = node.next
+        if self.head:
+            node = self.head
+            prev = None
+            while node and node.data != value:
+                prev = node
+                node = node.next
+            if node is None:
+                print("Value not found")
+                return
+            if node != self.head and node != self.tail:
+                prev.next = node.next
+            elif self.head == node == self.tail:
+                self.head = self.tail = None
+            elif node == self.head:
+                self.head = node.next
+            elif node == self.tail:
+                prev.next = None
+                self.tail = prev
             self.length -= 1
             return
-        if node and node == self.head:
-            self.head = node.next
-            self.length -= 1
-            return
-        print("Value not found")
+        print("Empty list!")
+        return
 
     def delete_all(self, value):
-        if self.length == 0:
+        if self.head:
+            node = self.head
+            prev = None
+            while node:
+                if node.data == value:
+                    if node != self.head and node != self.tail:
+                        prev.next = node.next
+                        node = prev.next
+                    elif node == self.head:
+                        self.head = node.next
+                        node = self.head
+                        if self.head is None:
+                            self.tail = None
+                    elif node == self.tail:
+                        prev.next = None
+                        self.tail = prev
+                        node = None
+                    self.length -= 1
+                    continue
+                prev = node
+                node = node.next
+        else:
             print("Empty list!")
-            return
-        node = self.head
-        prev = None
-        while node:
-            if node.data == value:
-                if node != self.head:
-                    prev.next = node.next
-                    node = prev.next
-                else:
-                    self.head = node.next
-                    node = self.head
-                self.length -= 1
-                continue
-            prev = node
-            node = node.next
+        return
 
     def update(self, new_value, old_value):
         if self.length == 0:
@@ -115,13 +127,11 @@ class LinkedList:
         if self.length == 0:
             print("Empty list!")
             return
-        else:
-            node = self.head
-            while node:
-                if node.data == value:
-                    node.data = data
-                node = node.next
-            return
+        node = self.head
+        while node:
+            if node.data == value:
+                node.data = data
+            node = node.next
 
     def update_index(self, data, index):
         if self.head and 0 <= index < self.length:
@@ -144,14 +154,15 @@ class LinkedList:
                 prev = current
                 current = new
             current.next = prev
+            self.tail = self.head
             self.head = current
         else:
             print("Empty List!")
         return
 
     def pop(self):
+        node = self.head
         if self.head and self.length > 1:
-            node = self.head
             prev = None
             while node.next:
                 prev = node
@@ -160,11 +171,42 @@ class LinkedList:
             self.length -= 1
             return node.data
         elif self.length == 1:
-            node = self.head
-            self.head = None
+            self.head = self.tail = None
             self.length -= 1
             return node.data
         else:
+            return None
+
+    def pop_left(self):
+        if self.head:
+            node = self.head.data
+            self.head = self.head.next
+            self.length -= 1
+            if self.head is None:
+                self.tail = None
+            return node
+        return None
+
+    def delete_index(self, index):
+        if self.head:
+            if 0 < index < self.length - 1:
+                node = self.head
+                prev = None
+                for _ in range(index):
+                    prev = node
+                    node = node.next
+                prev.next = node.next
+                self.length -= 1
+                return node.data
+            elif index == 0:
+                return self.pop_left()
+            elif index == self.length - 1:
+                return self.pop()
+            else:
+                print("Invalid index")
+                return None
+        else:
+            print("List is Empty!")
             return None
 
     def find(self, value):
@@ -233,5 +275,13 @@ if __name__ == "__main__":
     ll1.update_index(15, 8)
     ll1.update_index(16, 9)
     ll1.display()
-
-
+    ll1.pop_left()
+    ll1.display()
+    ll1.delete_index(0)
+    ll1.display()
+    ll1.delete_index(4)
+    ll1.display()
+    ll1.delete_index(5)
+    ll1.display()
+    ll1.delete_index(8)
+    ll1.display()
