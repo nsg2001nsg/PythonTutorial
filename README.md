@@ -25,8 +25,8 @@ This folder includes:
 This folder contains clean, beginner-to-intermediate implementations of:
 - ✅ Singly Linked List
 - ✅ Doubly Linked List
-- 🔜 Stack
-- 🔜 Queue
+- ✅ Stack
+- ✅ Queue
 - 🔜 Trees
 - 🔜 Graphs
 - 🔜 Sorting & Searching Algorithms
