@@ -11,7 +11,6 @@ class Node:
 class BinaryTree:
     def __init__(self):
         self.root = None
-        self.height = 0
 
     def insert(self, value):
         new_node = Node(value)
@@ -148,11 +147,10 @@ class BinaryTree:
 
     def postorder_mod(self):  # Left Right Root
         if self.root:
-            count = 0
             stack = [self.root]
             visited = set()
             left = set()
-            while stack and count < 50:
+            while stack:
                 node = stack.pop()
                 if node.left and node not in left:
                     stack.append(node)
@@ -167,6 +165,13 @@ class BinaryTree:
                 print(node.data, end=" ")
         else:
             print("Tree is Empty!")
+
+    def height(self, node):
+        if node is None:
+            return -1
+        left = self.height(node.left)
+        right = self.height(node.right)
+        return 1 + max(left, right)
 
 
 # b = BinaryTree()
@@ -200,3 +205,5 @@ print()
 bt.preorder()
 print()
 bt.postorder_mod()
+print()
+print(bt.height(bt.root))
