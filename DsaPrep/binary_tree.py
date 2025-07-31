@@ -121,31 +121,50 @@ class BinaryTree:
         else:
             print("Tree is Empty!")
 
-    def postorder(self):  # Left Right Root
+    def postorder(self):
+        if not self.root:
+            print("Tree is empty")
+            return
+
+        stack = []
+        result = []
+        last_visited = None
+        node = self.root
+
+        while stack or node:
+            if node:
+                stack.append(node)
+                node = node.left
+            else:
+                peek = stack[-1]
+                # If right child exists and hasn't been visited yet
+                if peek.right and last_visited != peek.right:
+                    node = peek.right
+                else:
+                    result.append(peek.data)
+                    last_visited = stack.pop()
+
+        print("Postorder:", *result)
+
+    def postorder_mod(self):  # Left Right Root
         if self.root:
-            node = self.root  # 1 2 4 6 4 2
-            stack = []  # 1
-            flag = 1  # 1 0
             count = 0
-            while node and count < 100:
-                count += 1
-                if node.left and flag:
+            stack = [self.root]
+            visited = set()
+            left = set()
+            while stack and count < 50:
+                node = stack.pop()
+                if node.left and node not in left:
                     stack.append(node)
-                    node = node.left
-                    flag = 1
+                    stack.append(node.left)
+                    left.add(node)
                     continue
-                elif node.right and flag:
-                    stack.append(node)                  #    1
-                    node = node.right                   #  /   \
-                    flag = 1                            # 2     3
-                    continue                            #  \     \
-                else:                                   #   4     5
-                    print(node.data)                    #  /     /
-                    try:                                # 6     7
-                        node = stack.pop()
-                    except Exception:
-                        return
-                    flag = 0
+                elif node.right and node not in visited:
+                    visited.add(node)
+                    stack.append(node)
+                    stack.append(node.right)
+                    continue
+                print(node.data, end=" ")
         else:
             print("Tree is Empty!")
 
@@ -161,16 +180,23 @@ class BinaryTree:
 # b.insert(7)
 # b.display()
 
+# bt = BinaryTree()
+# bt.root = Node(1)
+# bt.root.left = Node(2)
+# bt.root.right = Node(3)
+# bt.root.left.right = Node(4)
+# bt.root.left.right.left = Node(6)
+# bt.root.right.right = Node(5)
+# bt.root.right.right.left = Node(7)
+
 bt = BinaryTree()
 bt.root = Node(1)
 bt.root.left = Node(2)
 bt.root.right = Node(3)
-bt.root.left.right = Node(4)
-bt.root.left.right.left = Node(6)
-bt.root.right.right = Node(5)
-bt.root.right.right.left = Node(7)
+bt.root.left.left = Node(4)
+bt.root.left.right = Node(5)
 bt.inorder()
 print()
 bt.preorder()
 print()
-bt.postorder()
+bt.postorder_mod()
