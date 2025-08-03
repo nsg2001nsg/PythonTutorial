@@ -114,30 +114,67 @@ class BinarySearchTree:
                     return True
         return False
 
+    def delete(self, value):
+        if self.root:
+            node = self.root
+            if value < node:
+                pass
+
+    def height(self):
+        if self.root is None:
+            return -1
+
+        stack = [(self.root, 0)]  # [2 1]
+        max_depth = 0  # 0
+
+        while stack:
+            node, depth = stack.pop()  # 15 0
+            max_depth = max(max_depth, depth)  # 0
+            if node.left:
+                stack.append((node.left, depth + 1))
+            if node.right:
+                stack.append((node.right, depth + 1))
+
+        return max_depth
+
 
 bst = BinarySearchTree()
-bst.root = Node(2)
-bst.root.left = Node(1)
-bst.root.left.left = Node(0)
-bst.root.right = Node(9)
-bst.root.right.left = Node(6)
-bst.root.right.left.left = Node(4)
-bst.root.right.left.right = Node(7)
-bst.inorder()
-print()
-bst.inorder_recursive(bst.root)
-print()
-bst.preorder()
-print()
-bst.preorder_recursive(bst.root)
-print()
+# bst.root = Node(2)
+# bst.root.left = Node(1)
+# bst.root.left.left = Node(0)
+# bst.root.right = Node(9)
+# bst.root.right.left = Node(6)
+# bst.root.right.left.left = Node(4)
+# bst.root.right.left.right = Node(7)
+# bst.inorder()
+# print()
+# bst.inorder_recursive(bst.root)
+# print()
+# bst.preorder()
+# print()
+# bst.preorder_recursive(bst.root)
+# print()
+# bst.postorder()
+# print()
+# bst.postorder_recursive(bst.root)
+# print()
+# print(bst.search(0))
+# print(bst.search(4))
+# print(bst.search(2))
+# print(bst.search(7))
+# print(bst.search(10))
+bst.root = Node(15)
+bst.root.left = Node(2)
+bst.root.right = Node(19)
+bst.root.left.left = Node(1)
+bst.root.left.left.left = Node(0)
+bst.root.left.right = Node(3)
+bst.root.left.right.right = Node(11)
+bst.root.left.right.right.left = Node(10)
+bst.root.right = Node(19)
+bst.root.right.left = Node(16)
+bst.root.right.right = Node(20)
 bst.postorder()
 print()
-bst.postorder_recursive(bst.root)
-print()
-print(bst.search(0))
-print(bst.search(4))
-print(bst.search(2))
-print(bst.search(7))
-print(bst.search(10))
+print(bst.height())
 
