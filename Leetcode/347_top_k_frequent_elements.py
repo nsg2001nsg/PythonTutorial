@@ -26,12 +26,27 @@ k is in the range [1, the number of unique elements in the array].
 It is guaranteed that the answer is unique
 """
 import heapq
-from collections import Counter
+from collections import Counter, defaultdict
 
 
 def topKFrequent(nums, k):  # [2,3,4,5,1]
     buckets = [[] for _ in range(len(nums) + 1)]
     for key, val in Counter(nums).items():
+        buckets[val].append(key)
+    res = []
+    for bucket in buckets[::-1]:
+        while bucket and k:
+            res.append(bucket.pop())
+            k -= 1
+    return res
+
+
+def topKFrequent_alt(nums, k):  # [2,3,4,5,1]
+    buckets = [[] for _ in range(len(nums) + 1)]
+    nums_dict = defaultdict(int)
+    for num in nums:
+        nums_dict[num] += 1
+    for key, val in nums_dict.items():
         buckets[val].append(key)
     res = []
     for bucket in buckets[::-1]:
@@ -53,7 +68,10 @@ def topKFrequent_heap(nums, k):  # [2,3,4,5,1]
     return [val[1] for val in min_heap]
 
 
-# topKFrequent([2, 2, 2, 3, 3, 3, 4, 5, 1], 5)
+# print(topKFrequent([2, 2, 2, 3, 3, 3, 4, 5, 1], 5))
+print(topKFrequent([2, 2, 3, 3, 4, 4], 1))
+# print(topKFrequent_alt([2, 2, 2, 3, 3, 3, 4, 5, 1], 5))
+# print(topKFrequent_heap([2, 2, 2, 3, 3, 3, 4, 5, 1], 5))
 # topKFrequent([], 5)
 # topKFrequent([1], 1)
-print(topKFrequent_heap([2, 2, 3, 4, 1, 4, 4, 5], 2))
+# print(topKFrequent_heap([2, 2, 3, 4, 1, 4, 4, 5], 2))
